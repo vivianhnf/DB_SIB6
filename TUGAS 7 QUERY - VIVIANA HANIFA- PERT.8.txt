@@ -1,0 +1,86 @@
+ 
+SOAL 6.1 
+____________
+1. CREATE PROCEDURE pro_naik(
+    ->     IN jenis_produk INT,
+    ->     IN persentasi_kenaikan INT
+    -> )
+    -> BEGIN
+    ->     UPDATE produk
+    ->     SET harga_jual = harga_jual + (harga_jual * persentasi_kenaikan / 100)
+    ->     WHERE jenis_produk_id = jenis_produk;
+    -> END$$
+Query OK, 0 rows affected (0.023 sec)
+
+ DELIMITER ;
+MariaDB [db_sib6]> CALL pro_naik(1,4);
+Query OK, 13 rows affected (0.053 sec)
+
+DELIMITER $$
+MariaDB [db_sib6]>
+MariaDB [db_sib6]> CREATE PROCEDURE pro_naikan_harga()
+    -> BEGIN
+    ->     UPDATE produk
+    ->     SET harga_jual = harga_jual * 1.4
+    ->     WHERE beberapa_kondisi;
+    -> END$$
+Query OK, 0 rows affected (0.008 sec)
+
+
+2.  CREATE FUNCTION umur(tgl_lahir DATE)
+    -> RETURNS INT
+    -> BEGIN
+    ->     DECLARE umur INT;
+    ->     SET umur = YEAR(CURDATE()) - YEAR(tgl_lahir);
+    ->     RETURN umur;
+    -> END$$
+Query OK, 0 rows affected (0.006 sec)
+
+ SELECT nama, umur(tgl_lahir) AS umur FROM pelanggan;
++--------------------+------+
+| nama               | umur |
++--------------------+------+
+| Agung Sedayu Group |   14 |
+| Pandan Wangi       |   74 |
+| Sekar Mirah        |   41 |
+| Swandaru Geni      |   43 |
+| Pradabashu         |   39 |
+| Gayatri Dwi        |   37 |
+| Dewi Gyat          |   36 |
+| Andre Haru         |   34 |
+| Ahmad Hasan        |   32 |
+| Cassanndra         |   34 |
+| Andi Wijaya        |    1 |
+| Ira                |    1 |
++--------------------+------+
+12 rows in set (0.004 sec)
+
+
+3. MariaDB [db_sib6]> DELIMITER $$
+MariaDB [db_sib6]> CREATE FUNCTION ktgri_harga(price DOUBLE)
+    ->     RETURNS VARCHAR(20)
+    ->     BEGIN
+    ->          DECLARE category VARCHAR(20);
+    ->
+    ->          IF price <= 500000 THEN
+    ->              SET category = 'murah';
+    ->          ELSEIF price <= 3000000 THEN
+    ->              SET category = 'sedang';
+    ->          ELSEIF price <= 10000000 THEN
+    ->              SET category = 'mahal';
+    ->          ELSE
+    ->              SET category = 'sangat mahal';
+    ->          END IF;
+    ->
+    ->          RETURN category;
+    ->      END $$
+Query OK, 0 rows affected (0.006 sec)
+
+ SELECT ktgri_harga(200000);
++---------------------+
+| ktgri_harga(200000) |
++---------------------+
+| murah               |
++---------------------+
+1 row in set (0.001 sec)
+
